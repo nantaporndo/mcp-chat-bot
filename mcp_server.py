@@ -40,16 +40,20 @@ def edit_document(doc_id:str=Field(description="Id of the document to edit."),
     docs[doc_id] = docs[doc_id].replace(old_str,new_str)
 
 
-@mcp.resource("docs://documents")
+@mcp.resource("docs://documents",
+              mime_type="application/json")
 def list_documents() -> list[str]:
     return list(docs.keys())
 
 
-@mcp.resource("docs://{doc_id}")
+@mcp.resource("docs://{doc_id}",
+              mime_type="text/plain"
+              )
 def get_document(doc_id: str) -> str:
     if doc_id not in docs:
         raise ValueError(f"Document '{doc_id}' not found.")
     return docs[doc_id]
+
 # TODO: Write a prompt to rewrite a doc in markdown format
 # TODO: Write a prompt to summarize a doc
 
